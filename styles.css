@@ -342,23 +342,15 @@ h1 em, h2 em { font-style: italic; }
   .header-inner { height: 76px; }
   .brand img { height: 58px; }
   .nav .btn { padding: 10px 14px; letter-spacing: 0.12em; }
-  /* Phones: the whole photo on top (no cropping or zoom), headline below it */
+  /* Phones: the box is the same shape as the tall photo (1000x1234),
+     so the photo fits almost exactly instead of being zoomed in */
   .hero {
-    display: block;
-    min-height: 0;
-    padding: 0;
-    background: var(--white);
-    color: var(--ink);
+    min-height: 123vw;
+    padding: 36px 16px;
   }
-  .hero-photo { position: static; display: block; }
-  .hero-photo img { height: auto; }
-  .hero-photo::after { display: none; }
-  .hero-content { padding: 40px 16px 8px; }
-  .hero h1 { color: var(--ink); }
-  .hero .label-light { color: var(--blue); }
-  .hero-lead { color: var(--muted); }
-  .hero .btn { width: 100%; }
-  .hero .btn-ghost { border-color: var(--ink); color: var(--ink); }
+  .hero-lead { font-size: 1rem; margin-bottom: 1.6em; }
+  .hero-actions { gap: 10px; }
+  .hero .btn { width: 100%; padding: 13px 20px; }
   .intro { padding: 64px 0 16px; }
   .section { padding: 64px 0; }
   .section-head { margin-bottom: 36px; }
