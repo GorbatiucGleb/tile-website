@@ -313,6 +313,17 @@ h1 em, h2 em { font-style: italic; }
 
 .mobile-call { display: none; }
 
+/* ---------- Tall screens (phones, tablets held upright) ---------- */
+/* Use a tall crop of the top photo so it isn't zoomed in */
+@media (max-aspect-ratio: 1/1) {
+  .hero {
+    background:
+      linear-gradient(rgba(20,22,24,0.40), rgba(20,22,24,0.50)),
+      url("images/hero-mobile.jpg") center / cover no-repeat,
+      linear-gradient(135deg, #b9b1a6 0%, #8f877d 55%, #6f685f 100%);
+  }
+}
+
 /* ---------- Tablet ---------- */
 @media (max-width: 900px) {
   .nav a:not(.btn) { display: none; }
