@@ -1,14 +1,22 @@
+// Always open at the top of the page (phones otherwise jump back to where you last were),
+// unless the link points at a section like #quote
+if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+window.addEventListener("load", function () {
+  if (!location.hash) window.scrollTo(0, 0);
+});
+
 // Keep the footer year current
 document.getElementById("year").textContent = new Date().getFullYear();
 
 // Quote form: sends the request straight to the business Gmail through FormSubmit (free).
-// The very first request triggers an "Activate" email that has to be clicked once.
 const form = document.getElementById("quote-form");
 const statusText = document.getElementById("form-status");
+const success = document.getElementById("form-success");
+const button = form.querySelector(".quote-submit");
+const buttonText = button.querySelector(".label-text");
 
 form.addEventListener("submit", async function (event) {
   event.preventDefault();
-  const button = form.querySelector("button");
   const data = Object.fromEntries(new FormData(form));
 
   data._subject = "New quote request: " + data.project + " (" + data.name + ")";
@@ -17,7 +25,7 @@ form.addEventListener("submit", async function (event) {
   if (data.email) data._replyto = data.email;
 
   button.disabled = true;
-  button.textContent = "Sending…";
+  buttonText.textContent = "Sending…";
   statusText.className = "form-status";
   statusText.textContent = "";
 
@@ -32,13 +40,19 @@ form.addEventListener("submit", async function (event) {
     if (!response.ok || String(result.success) !== "true") throw new Error(result.message || "Request failed");
 
     form.reset();
-    statusText.classList.add("is-success");
-    statusText.textContent = "Thank you! Your request was sent. We'll get back to you soon.";
+    form.hidden = true;
+    success.hidden = false;
+    success.scrollIntoView({ behavior: "smooth", block: "center" });
   } catch (error) {
     statusText.classList.add("is-error");
     statusText.innerHTML = 'Sorry, something went wrong. Please call us at <a href="tel:+16129917000">612-991-7000</a>.';
   } finally {
     button.disabled = false;
-    button.textContent = "Send Request";
+    buttonText.textContent = "Get My Free Quote";
   }
+});
+
+document.getElementById("send-another").addEventListener("click", function () {
+  success.hidden = true;
+  form.hidden = false;
 });
