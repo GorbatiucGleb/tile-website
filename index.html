@@ -11,7 +11,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Montserrat:wght@500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <!-- Bump the ?v= number after style changes so phones load the new version -->
+  <link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body>
 
@@ -38,8 +39,12 @@
 
   <main id="top">
 
-    <!-- Hero: full-width photo. Put the photo at images/hero.jpg -->
+    <!-- Hero: full-width photo. Wide crop for computers, tall crop for phones -->
     <section class="hero">
+      <picture class="hero-photo">
+        <source media="(max-aspect-ratio: 1/1)" srcset="images/hero-mobile.jpg">
+        <img src="images/hero.jpg" alt="Bathroom by Custom Tile Interiors: freestanding tub on a basketweave mosaic and a glass shower with large-format tile">
+      </picture>
       <div class="hero-content">
         <p class="label label-light">Tile Contractor · Twin Cities, MN</p>
         <h1>Custom tile, <em>beautifully</em> installed.</h1>
