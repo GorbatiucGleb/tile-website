@@ -93,7 +93,7 @@ h1 em, h2 em { font-style: italic; }
   padding-top: 8px;
   padding-bottom: 8px;
 }
-.top-bar a { text-decoration: none; font-weight: 500; color: var(--ink); }
+.top-bar a { text-decoration: none; font-weight: 500; color: var(--ink); display: inline-block; padding: 4px 0; }
 
 .site-header {
   position: sticky;
@@ -290,7 +290,7 @@ h1 em, h2 em { font-style: italic; }
   text-transform: uppercase;
   color: var(--muted);
 }
-.contact-list a { text-decoration: none; font-weight: 500; }
+.contact-list a { text-decoration: none; font-weight: 500; display: inline-block; padding: 8px 0; }
 .contact-list a:hover { color: var(--blue); }
 
 .quote-form {
@@ -335,7 +335,7 @@ h1 em, h2 em { font-style: italic; }
 }
 .footer-logo { height: 80px; width: auto; margin: 0 auto 20px; }
 .site-footer p { margin: 0 0 6px; }
-.site-footer a { text-decoration: none; color: var(--ink); }
+.site-footer a { text-decoration: none; color: var(--ink); display: inline-block; padding: 10px 0; }
 .site-footer a:hover { color: var(--blue); }
 .copyright { margin-top: 16px !important; font-size: 0.8rem; }
 
