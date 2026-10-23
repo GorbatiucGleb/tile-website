@@ -215,7 +215,8 @@ h1 em, h2 em { font-style: italic; }
   grid-template-columns: repeat(3, 1fr);
   gap: 56px 32px;
 }
-.service .ph { aspect-ratio: 4 / 3; margin-bottom: 22px; }
+/* Tall frames, the same 2:3 shape as the photos, so nothing gets zoomed in */
+.service .ph { aspect-ratio: 2 / 3; margin-bottom: 22px; }
 .service h3 { margin-bottom: 0.3em; }
 .service p { color: var(--muted); margin: 0; font-size: 0.98rem; }
 
@@ -226,7 +227,9 @@ h1 em, h2 em { font-style: italic; }
   gap: 72px;
   align-items: center;
 }
-.ph-tall { aspect-ratio: 4 / 5; }
+/* Mitered-edge photo: shown whole at its own shape */
+.ph-tall { display: block; }
+.ph-tall img { height: auto; }
 .split-text p:not(.label) { color: var(--muted); }
 
 /* ---------- Gallery ---------- */
@@ -240,7 +243,6 @@ h1 em, h2 em { font-style: italic; }
   break-inside: avoid;
 }
 .gallery img { width: 100%; height: auto; }
-.focus-low { object-position: center 80%; }
 
 /* ---------- About ---------- */
 .framed {
@@ -332,9 +334,7 @@ h1 em, h2 em { font-style: italic; }
 @media (max-width: 900px) {
   .nav a:not(.btn) { display: none; }
   .services-grid { grid-template-columns: 1fr 1fr; }
-  .split, .quote-inner { grid-template-columns: 1fr; gap: 48px; }
-  .ph-tall { aspect-ratio: 4 / 3; }
-  .framed { padding: 56px 32px; }
+  .split, .quote-inner { grid-template-columns: 1fr; gap: 48px; }  .framed { padding: 56px 32px; }
 }
 
 /* ---------- Phone ---------- */
