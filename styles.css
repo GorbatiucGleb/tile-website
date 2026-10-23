@@ -255,6 +255,38 @@ h1 em, h2 em { font-style: italic; }
 }
 .gallery img { width: 100%; height: auto; }
 
+/* ---------- Reviews ---------- */
+.stars { color: #e2a43b; letter-spacing: 0.12em; }
+.rating { margin: 0.4em 0 0; color: var(--muted); }
+.rating .stars { font-size: 1.15rem; }
+.rating strong { color: var(--ink); font-weight: 600; }
+.reviews-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.review {
+  margin: 0;
+  background: var(--stone);
+  border-top: 3px solid var(--blue);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.review blockquote {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  line-height: 1.5;
+  flex: 1;
+}
+.review figcaption strong { display: block; font-weight: 600; }
+.review figcaption span { color: var(--muted); font-size: 0.9rem; }
+.reviews-actions { text-align: center; margin-top: 40px; }
+
 /* ---------- About ---------- */
 .framed {
   max-width: 860px;
@@ -382,6 +414,9 @@ h1 em, h2 em { font-style: italic; }
   .gallery figure { margin-bottom: 10px; }
   .framed { padding: 44px 20px; }
   .form-row { grid-template-columns: 1fr; }
+  .reviews-grid { grid-template-columns: 1fr; }
+  .review { padding: 28px 22px; }
+  .review blockquote { font-size: 1.12rem; }
   .quote-form { padding: 24px 18px; }
   .quote-form button { justify-self: stretch; }
 
