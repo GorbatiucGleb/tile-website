@@ -27,7 +27,9 @@ form.addEventListener("submit", async function (event) {
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify(data),
     });
-    if (!response.ok) throw new Error("Request failed");
+    // FormSubmit answers 200 even when it didn't send, so check its "success" flag too
+    const result = await response.json();
+    if (!response.ok || String(result.success) !== "true") throw new Error(result.message || "Request failed");
 
     form.reset();
     statusText.classList.add("is-success");
