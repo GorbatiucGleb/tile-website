@@ -215,8 +215,9 @@ h1 em, h2 em { font-style: italic; }
   grid-template-columns: repeat(3, 1fr);
   gap: 56px 32px;
 }
-/* Tall frames, the same 2:3 shape as the photos, so nothing gets zoomed in */
-.service .ph { aspect-ratio: 2 / 3; margin-bottom: 22px; }
+/* Each photo shows whole at its own shape, never cropped or zoomed */
+.service .ph { display: block; margin-bottom: 22px; }
+.service .ph img { height: auto; }
 .service h3 { margin-bottom: 0.3em; }
 .service p { color: var(--muted); margin: 0; font-size: 0.98rem; }
 
