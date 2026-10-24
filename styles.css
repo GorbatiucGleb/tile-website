@@ -686,25 +686,47 @@ a:focus-visible, button:focus-visible {
 }
 .hero-slides .hero-photo.is-active { opacity: 1; }
 
-/* ---------- Logo: the C flips ---------- */
-.brand { position: relative; display: inline-block; line-height: 0; perspective: 400px; }
+/* ---------- Logo: the C shatters like glass, then comes back ---------- */
+.brand { position: relative; display: inline-block; line-height: 0; }
 .brand .brand-c {
   position: absolute;
   left: 39.29%;
   top: 1.68%;
   width: 23.21%;
-  height: auto;
-  transform-origin: 50% 50%;
-  animation: c-flip 2s ease-in-out infinite 2.5s;
+  aspect-ratio: 78 / 85;
 }
-/* Every 2 seconds: a short rest, then one smooth full flip */
-@keyframes c-flip {
-  0%, 45%  { transform: rotateY(0deg); }
-  72%      { transform: rotateY(180deg) scale(1.08); }
-  100%     { transform: rotateY(360deg); }
+/* Every shard is the whole C image, clipped to its own piece */
+.brand-c i {
+  position: absolute;
+  inset: 0;
+  background: url("images/logo-c.png") center / 100% 100% no-repeat;
+  will-change: transform, opacity;
+  animation: c-shatter 3.2s infinite;
+  animation-delay: 0ms;
+}
+/* Still → shatter outward and fade → gone → pieces fly back and lock together → still */
+@keyframes c-shatter {
+  0%, 38% {
+    transform: none;
+    opacity: 1;
+    animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+  56% {
+    transform: translate(var(--tx), var(--ty)) rotate(var(--r)) scale(0.7);
+    opacity: 0;
+  }
+  68% {
+    transform: translate(var(--tx), var(--ty)) rotate(var(--r)) scale(0.7);
+    opacity: 0;
+    animation-timing-function: cubic-bezier(0.5, 0, 0.2, 1);
+  }
+  92%, 100% {
+    transform: none;
+    opacity: 1;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .brand .brand-c { animation: none; }
+  .brand-c i { animation: none; }
   .hero-slides .hero-photo { transition: none; }
 }
