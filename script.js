@@ -37,6 +37,34 @@ if (root.classList.contains("is-loading")) {
   setTimeout(hide, Math.max(0, 5000 - performance.now()));
 }
 
+// Menu and "Free Quote" links: scroll to the section, then double-check we really landed on it.
+// (If anything above it changed size while scrolling, jump the last bit so it's exact.)
+const headerOffset = function () {
+  return document.querySelector(".site-header").offsetHeight + 8;
+};
+const targetTop = function (el) {
+  return el.getBoundingClientRect().top + window.scrollY - headerOffset();
+};
+document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+  const id = link.getAttribute("href");
+  if (id.length < 2) return;
+  link.addEventListener("click", function (event) {
+    const target = document.querySelector(id);
+    if (!target) return;
+    event.preventDefault();
+    history.pushState(null, "", id);
+    window.scrollTo({ top: targetTop(target), behavior: "smooth" });
+
+    let checks = 0;
+    const settle = function () {
+      const off = Math.abs(target.getBoundingClientRect().top - headerOffset());
+      if (off > 4) window.scrollTo({ top: targetTop(target), behavior: "instant" });
+      if (++checks < 3) setTimeout(settle, 400);
+    };
+    setTimeout(settle, 900);
+  });
+});
+
 // Keep the footer year current
 document.getElementById("year").textContent = new Date().getFullYear();
 
