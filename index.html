@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Montserrat:wght@500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <!-- Bump the ?v= number after style changes so phones load the new version -->
-  <link rel="stylesheet" href="styles.css?v=24">
+  <link rel="stylesheet" href="styles.css?v=25">
   <!-- Show the loading screen once per visit (not again when moving around the page) -->
   <script>
     try { if (!sessionStorage.getItem("cti-intro")) document.documentElement.classList.add("is-loading"); }
@@ -99,19 +99,25 @@
           <img width="1334" height="750" src="images/hero-kitchen.jpg" alt="Farmhouse kitchen with a green glazed tile backsplash behind the range">
         </picture>
         <picture class="hero-photo">
+          <source media="(max-aspect-ratio: 1/1)" srcset="images/hero-herringbone-mobile.jpg">
+          <img width="1334" height="750" src="images/hero-herringbone.jpg" alt="Shower with a charcoal herringbone tile wall">
+        </picture>
+        <picture class="hero-photo">
           <source media="(max-aspect-ratio: 1/1)" srcset="images/hero-onyx-mobile.jpg">
           <img width="1333" height="749" src="images/hero-onyx.jpg" alt="Shower with large blue onyx-look slab walls">
+        </picture>
+        <picture class="hero-photo">
+          <source media="(max-aspect-ratio: 1/1)" srcset="images/hero-blue-subway-mobile.jpg">
+          <img width="1334" height="750" src="images/hero-blue-subway.jpg" alt="Pale blue glossy subway tile shower with a marble ledge">
         </picture>
         <picture class="hero-photo">
           <source media="(max-aspect-ratio: 1/1)" srcset="images/hero-green-shower-mobile.jpg">
           <img width="1600" height="900" src="images/hero-green-shower.jpg" alt="Shower with glossy green handmade-look tile and a recessed niche">
         </picture>
-      </div>
-      <div class="hero-dots" aria-label="Choose a photo">
-        <button type="button" class="hero-dot is-active" aria-label="Show photo 1"></button>
-        <button type="button" class="hero-dot" aria-label="Show photo 2"></button>
-        <button type="button" class="hero-dot" aria-label="Show photo 3"></button>
-        <button type="button" class="hero-dot" aria-label="Show photo 4"></button>
+        <picture class="hero-photo">
+          <source media="(max-aspect-ratio: 1/1)" srcset="images/hero-sauna-mobile.jpg">
+          <img width="1320" height="742" src="images/hero-sauna.jpg" alt="Spa bathroom with a cedar sauna next to a tiled shower">
+        </picture>
       </div>
       <div class="hero-content">
         <p class="label label-light">Tile Contractor · Twin Cities, MN</p>
@@ -374,6 +380,6 @@
   <!-- Call button that stays on screen on phones -->
   <a href="tel:+16129917000" class="mobile-call">Call for a Free Quote</a>
 
-  <script src="script.js?v=24"></script>
+  <script src="script.js?v=25"></script>
 </body>
 </html>

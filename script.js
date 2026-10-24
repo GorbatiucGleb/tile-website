@@ -100,11 +100,10 @@ safely("section links", function () {
 });
 
 // ---------- Top slideshow ----------
-// Fades to the next photo every 2 seconds and loops back to the first. Tapping a dot jumps
-// to that photo. Pauses while the tab isn't visible, and stays still for "Reduce Motion".
+// Fades to the next photo every 2 seconds and loops back to the first.
+// Pauses while the tab isn't visible, and stays still for "Reduce Motion".
 safely("slideshow", function () {
   const slides = Array.from(document.querySelectorAll(".hero-slides .hero-photo"));
-  const dots = Array.from(document.querySelectorAll(".hero-dot"));
   if (slides.length < 2) return;
   const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const DELAY = 2000;
@@ -114,19 +113,12 @@ safely("slideshow", function () {
   const show = function (next) {
     index = (next + slides.length) % slides.length;
     slides.forEach(function (s, i) { s.classList.toggle("is-active", i === index); });
-    dots.forEach(function (d, i) {
-      d.classList.toggle("is-active", i === index);
-      d.setAttribute("aria-current", i === index ? "true" : "false");
-    });
   };
   const start = function () {
     clearInterval(timer);
     if (!calm) timer = setInterval(function () { show(index + 1); }, DELAY);
   };
 
-  dots.forEach(function (dot, i) {
-    dot.addEventListener("click", function () { show(i); start(); });
-  });
   document.addEventListener("visibilitychange", function () {
     if (document.hidden) clearInterval(timer); else start();
   });
