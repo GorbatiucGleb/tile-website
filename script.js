@@ -137,7 +137,7 @@ safely("footer year", function () {
 });
 
 // ---------- Quote form ----------
-// Sends the request straight to the business Gmail through FormSubmit (free).
+// Sends the request straight to the business Gmail through Web3Forms (free).
 safely("quote form", function () {
   const form = document.getElementById("quote-form");
   if (!form) return;
@@ -146,7 +146,7 @@ safely("quote form", function () {
   const button = form.querySelector(".quote-submit");
   const buttonText = button.querySelector(".label-text");
   const sendAnother = document.getElementById("send-another");
-  const ENDPOINT = "https://formsubmit.co/ajax/agcustomtileinteriors@gmail.com";
+  const ENDPOINT = "https://api.web3forms.com/submit";
   let sending = false;
 
   form.noValidate = true; // we show our own, clearer messages
@@ -203,12 +203,11 @@ safely("quote form", function () {
     if (!data.name) return flag(form.elements.name, "Please enter your name.");
     if (data.phone.replace(/\D/g, "").length < 10) return flag(form.elements.phone, "Please enter a phone number with area code.");
     if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return flag(form.elements.email, "That email doesn't look right. Check it, or leave it empty.");
-    if (data._honey) return; // a bot filled the hidden trap, so quietly ignore it
+    if (data.botcheck) return; // a bot ticked the hidden trap, so quietly ignore it
+    delete data.botcheck;
 
-    data._subject = "New quote request: " + data.project + " (" + data.name + ")";
-    data._template = "table";
-    data._captcha = "false";
-    if (data.email) data._replyto = data.email;
+    data.subject = "New quote request: " + data.project + " (" + data.name + ")";
+    if (data.email) data.replyto = data.email; // so "Reply" in Gmail answers the customer
 
     sending = true;
     button.disabled = true;
@@ -225,7 +224,7 @@ safely("quote form", function () {
         body: JSON.stringify(data),
         signal: controller ? controller.signal : undefined,
       });
-      // FormSubmit answers 200 even when it didn't send, so check its "success" flag too
+      // Only count it as sent when Web3Forms says so
       const result = await response.json().catch(function () { return {}; });
       if (!response.ok || String(result.success) !== "true") throw new Error(result.message || "Request failed");
 

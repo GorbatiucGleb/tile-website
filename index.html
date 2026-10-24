@@ -319,11 +319,12 @@
 
           <!-- Right: the form -->
           <div class="quote-main">
-            <!-- action/method are a backup so the form still sends if the script can't run -->
-            <form class="quote-form" id="quote-form" action="https://formsubmit.co/agcustomtileinteriors@gmail.com" method="POST">
-              <input type="hidden" name="_subject" value="New quote request from the website">
-              <input type="hidden" name="_captcha" value="false">
-              <input type="hidden" name="_template" value="table">
+            <!-- Sends through Web3Forms to the business Gmail. action/method are a backup so the form
+                 still sends if the script can't run. The access key is public by design (it only sends to that inbox). -->
+            <form class="quote-form" id="quote-form" action="https://api.web3forms.com/submit" method="POST">
+              <input type="hidden" name="access_key" value="3ab8ea26-3a21-4261-b1b0-03b778acfa24">
+              <input type="hidden" name="subject" value="New quote request from the website">
+              <input type="hidden" name="from_name" value="Custom Tile Interiors website">
               <fieldset class="chips">
                 <legend>What are you planning?</legend>
                 <label><input type="radio" name="project" value="Custom shower" required><span>Custom shower</span></label>
@@ -356,7 +357,7 @@
               </label>
 
               <!-- Spam trap: hidden from people, bots fill it in -->
-              <input type="text" name="_honey" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+              <input type="checkbox" name="botcheck" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true">
 
               <button type="submit" class="quote-submit">
                 <span class="label-text">Get My Free Quote</span>
@@ -393,6 +394,6 @@
   <!-- Call button that stays on screen on phones -->
   <a href="tel:+16129917000" class="mobile-call">Call for a Free Quote</a>
 
-  <script src="script.js?v=35"></script>
+  <script src="script.js?v=36"></script>
 </body>
 </html>
