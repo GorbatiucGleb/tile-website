@@ -701,26 +701,27 @@ a:focus-visible, button:focus-visible {
   inset: 0;
   background: url("images/logo-c.png") center / 100% 100% no-repeat;
   will-change: transform, opacity;
-  animation: c-shatter 3.2s infinite;
+  animation: c-shatter 3.6s infinite;
   animation-delay: 0ms;
 }
-/* Still → shatter outward and fade → gone → pieces fly back and lock together → still */
+/* Still → cracks and the pieces gently fall down and fade → gone →
+   pieces float back up and settle into the C → still */
 @keyframes c-shatter {
-  0%, 38% {
+  0%, 36% {
     transform: none;
     opacity: 1;
-    animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1);
+    animation-timing-function: cubic-bezier(0.55, 0, 0.85, 0.4);   /* slow start, like gravity */
   }
-  56% {
-    transform: translate(var(--tx), var(--ty)) rotate(var(--r)) scale(0.7);
+  62% {
+    transform: translate(var(--tx), var(--ty)) rotate(var(--r));
     opacity: 0;
   }
-  68% {
-    transform: translate(var(--tx), var(--ty)) rotate(var(--r)) scale(0.7);
+  70% {
+    transform: translate(var(--tx), var(--ty)) rotate(var(--r));
     opacity: 0;
-    animation-timing-function: cubic-bezier(0.5, 0, 0.2, 1);
+    animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1);     /* glides in and eases to a stop */
   }
-  92%, 100% {
+  94%, 100% {
     transform: none;
     opacity: 1;
   }
