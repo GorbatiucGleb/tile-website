@@ -23,11 +23,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Montserrat:wght@500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <!-- Bump the ?v= number after style changes so phones load the new version -->
-  <link rel="stylesheet" href="styles.css?v=32">
+  <link rel="stylesheet" href="styles.css?v=35">
   <!-- Show the loading screen once per visit (not again when moving around the page) -->
   <script>
     try { if (!sessionStorage.getItem("cti-intro")) document.documentElement.classList.add("is-loading"); }
     catch (e) { document.documentElement.classList.add("is-loading"); }
+    // Backup: even if the main script never loads, never keep the page locked behind the loading screen
+    setTimeout(function () { document.documentElement.classList.remove("is-loading", "is-loaded"); }, 6000);
   </script>
 </head>
 <body>
@@ -99,32 +101,32 @@
       <!-- Slideshow: photos fade from one to the next. Wide crops for computers, tall crops for phones -->
       <div class="hero-slides">
         <picture class="hero-photo is-active">
-          <source media="(max-aspect-ratio: 1/1)" srcset="images/hero-mobile.jpg">
-          <img width="2000" height="1124" src="images/hero.jpg" alt="Bathroom by Custom Tile Interiors: freestanding tub on a basketweave mosaic and a glass shower with large-format tile" fetchpriority="high">
+          <source media="(max-aspect-ratio: 1/1)" srcset="images/hero-mobile-hd.jpg">
+          <img width="2400" height="1350" src="images/hero-hd.jpg" alt="Bathroom by Custom Tile Interiors: freestanding tub on a basketweave mosaic and a glass shower with large-format tile" fetchpriority="high">
         </picture>
         <picture class="hero-photo">
-          <source media="(max-aspect-ratio: 1/1)" srcset="images/hero-kitchen-mobile.jpg">
-          <img width="1334" height="750" src="images/hero-kitchen.jpg" alt="Farmhouse kitchen with a green glazed tile backsplash behind the range">
+          <source media="(max-aspect-ratio: 1/1)" srcset="images/hero-kitchen-mobile-hd.jpg">
+          <img width="2400" height="1350" src="images/hero-kitchen-hd.jpg" alt="Farmhouse kitchen with a green glazed tile backsplash behind the range" fetchpriority="low" decoding="async">
         </picture>
         <picture class="hero-photo">
-          <source media="(max-aspect-ratio: 1/1)" srcset="images/hero-herringbone-mobile.jpg">
-          <img width="1334" height="750" src="images/hero-herringbone.jpg" alt="Shower with a charcoal herringbone tile wall">
+          <source media="(max-aspect-ratio: 1/1)" srcset="images/hero-herringbone-mobile-hd.jpg">
+          <img width="2400" height="1350" src="images/hero-herringbone-hd.jpg" alt="Shower with a charcoal herringbone tile wall" fetchpriority="low" decoding="async">
         </picture>
         <picture class="hero-photo">
-          <source media="(max-aspect-ratio: 1/1)" srcset="images/hero-onyx-mobile.jpg">
-          <img width="1333" height="749" src="images/hero-onyx.jpg" alt="Shower with large blue onyx-look slab walls">
+          <source media="(max-aspect-ratio: 1/1)" srcset="images/hero-onyx-mobile-hd.jpg">
+          <img width="2400" height="1350" src="images/hero-onyx-hd.jpg" alt="Shower with large blue onyx-look slab walls" fetchpriority="low" decoding="async">
         </picture>
         <picture class="hero-photo">
           <source media="(max-aspect-ratio: 1/1)" srcset="images/hero-dark-tub-mobile.jpg">
-          <img width="1472" height="828" src="images/hero-dark-tub.jpg" alt="Tub surround in large dark stone-look tile">
+          <img width="1472" height="828" src="images/hero-dark-tub.jpg" alt="Tub surround in large dark stone-look tile" fetchpriority="low" decoding="async">
         </picture>
         <picture class="hero-photo">
-          <source media="(max-aspect-ratio: 1/1)" srcset="images/hero-green-shower-mobile.jpg">
-          <img width="1600" height="900" src="images/hero-green-shower.jpg" alt="Shower with glossy green handmade-look tile and a recessed niche">
+          <source media="(max-aspect-ratio: 1/1)" srcset="images/hero-green-shower-mobile-hd.jpg">
+          <img width="2400" height="1350" src="images/hero-green-shower-hd.jpg" alt="Shower with glossy green handmade-look tile and a recessed niche" fetchpriority="low" decoding="async">
         </picture>
         <picture class="hero-photo">
-          <source media="(max-aspect-ratio: 1/1)" srcset="images/hero-teal-tub-mobile.jpg">
-          <img width="1334" height="750" src="images/hero-teal-tub.jpg" alt="Tub surround in deep teal glossy vertical tile with a long niche">
+          <source media="(max-aspect-ratio: 1/1)" srcset="images/hero-teal-tub-mobile-hd.jpg">
+          <img width="2400" height="1350" src="images/hero-teal-tub-hd.jpg" alt="Tub surround in deep teal glossy vertical tile with a long niche" fetchpriority="low" decoding="async">
         </picture>
       </div>
       <div class="hero-content">
@@ -318,7 +320,11 @@
 
           <!-- Right: the form -->
           <div class="quote-main">
-            <form class="quote-form" id="quote-form">
+            <!-- action/method are a backup so the form still sends if the script can't run -->
+            <form class="quote-form" id="quote-form" action="https://formsubmit.co/agcustomtileinteriors@gmail.com" method="POST">
+              <input type="hidden" name="_subject" value="New quote request from the website">
+              <input type="hidden" name="_captcha" value="false">
+              <input type="hidden" name="_template" value="table">
               <fieldset class="chips">
                 <legend>What are you planning?</legend>
                 <label><input type="radio" name="project" value="Custom shower" required><span>Custom shower</span></label>
@@ -332,22 +338,22 @@
 
               <div class="form-row">
                 <label class="field">Name
-                  <input type="text" name="name" required autocomplete="name" placeholder="Your full name">
+                  <input type="text" name="name" maxlength="100" required autocomplete="name" placeholder="Your full name">
                 </label>
                 <label class="field">Phone
-                  <input type="tel" name="phone" required autocomplete="tel" placeholder="(612) 555-0123">
+                  <input type="tel" name="phone" maxlength="40" required autocomplete="tel" placeholder="(612) 555-0123">
                 </label>
               </div>
               <div class="form-row">
                 <label class="field"><span>Email <span class="optional">optional</span></span>
-                  <input type="email" name="email" autocomplete="email" placeholder="you@example.com">
+                  <input type="email" name="email" maxlength="120" autocomplete="email" placeholder="you@example.com">
                 </label>
                 <label class="field">City
-                  <input type="text" name="city" autocomplete="address-level2" placeholder="e.g. Edina">
+                  <input type="text" name="city" maxlength="80" autocomplete="address-level2" placeholder="e.g. Edina">
                 </label>
               </div>
               <label class="field">Project details
-                <textarea name="details" rows="4" placeholder="Which room, approximate size, tile you have in mind, timeline…"></textarea>
+                <textarea name="details" rows="4" maxlength="3000" placeholder="Which room, approximate size, tile you have in mind, timeline…"></textarea>
               </label>
 
               <!-- Spam trap: hidden from people, bots fill it in -->
@@ -388,6 +394,6 @@
   <!-- Call button that stays on screen on phones -->
   <a href="tel:+16129917000" class="mobile-call">Call for a Free Quote</a>
 
-  <script src="script.js?v=30"></script>
+  <script src="script.js?v=35"></script>
 </body>
 </html>

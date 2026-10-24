@@ -57,7 +57,11 @@ safely("loading screen", function () {
 // check that's still waiting, so taps never fight each other.
 safely("section links", function () {
   const header = document.querySelector(".site-header");
-  const headerOffset = function () { return (header ? header.offsetHeight : 0) + 8; };
+  // Leave room for the menu only when it's stuck to the top of the screen
+  const headerOffset = function () {
+    const stuck = header && getComputedStyle(header).position === "sticky";
+    return (stuck ? header.offsetHeight : 0) + 8;
+  };
   const topOf = function (el) { return el.getBoundingClientRect().top + window.scrollY - headerOffset(); };
 
   let current = null;   // the section we're heading to right now
