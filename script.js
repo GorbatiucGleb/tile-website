@@ -1,18 +1,36 @@
-// Always open at the top of the page (phones otherwise jump back to where you last were),
-// unless the link points at a section like #quote
-if ("scrollRestoration" in history) history.scrollRestoration = "manual";
-window.addEventListener("load", function () {
-  if (!location.hash) window.scrollTo(0, 0);
+// Custom Tile Interiors — page behavior.
+// Each feature is set up separately, so if one ever breaks the others keep working.
+
+const root = document.documentElement;
+
+// Tracks whether the visitor has started scrolling or tapping on their own
+let userMoved = false;
+["wheel", "touchstart", "keydown"].forEach(function (type) {
+  window.addEventListener(type, function () { userMoved = true; }, { passive: true });
 });
 
-// Loading screen: stays up until its animation has fully played (about 2.3s from when it first
-// appears on screen) and the page is ready, then slides away. Never longer than ~5s in total.
-const root = document.documentElement;
-if (root.classList.contains("is-loading")) {
+function safely(name, setup) {
+  try { setup(); } catch (error) { console.error("[" + name + "]", error); }
+}
+
+// ---------- Open at the top ----------
+// Phones otherwise jump back to wherever you were last time. Links to a section (#quote) still work.
+safely("open at top", function () {
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  window.addEventListener("load", function () {
+    if (!location.hash && !userMoved) window.scrollTo(0, 0);
+  });
+});
+
+// ---------- Loading screen ----------
+// Stays up until its animation has fully played (about 2.3s from when it first appears)
+// and the page is ready, then slides away. Never longer than ~5s in total.
+safely("loading screen", function () {
+  if (!root.classList.contains("is-loading")) return;
   const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const playTime = calm ? 500 : 2300;
   let shownAt = null;
-  let pageReady = false;
+  let pageReady = document.readyState === "complete";
   let done = false;
 
   const hide = function () {
@@ -28,91 +46,177 @@ if (root.classList.contains("is-loading")) {
   };
 
   // The animation starts on the first frame drawn, so start the clock there
-  requestAnimationFrame(function () {
-    shownAt = performance.now();
-    tryHide();
-  });
-  if (document.readyState === "complete") pageReady = true;
-  else window.addEventListener("load", function () { pageReady = true; tryHide(); });
+  requestAnimationFrame(function () { shownAt = performance.now(); tryHide(); });
+  if (!pageReady) window.addEventListener("load", function () { pageReady = true; tryHide(); });
   setTimeout(hide, Math.max(0, 5000 - performance.now()));
-}
+});
 
-// Menu and "Free Quote" links: scroll to the section, then double-check we really landed on it.
-// (If anything above it changed size while scrolling, jump the last bit so it's exact.)
-const headerOffset = function () {
-  return document.querySelector(".site-header").offsetHeight + 8;
-};
-const targetTop = function (el) {
-  return el.getBoundingClientRect().top + window.scrollY - headerOffset();
-};
-document.querySelectorAll('a[href^="#"]').forEach(function (link) {
-  const id = link.getAttribute("href");
-  if (id.length < 2) return;
-  link.addEventListener("click", function (event) {
-    const target = document.querySelector(id);
-    if (!target) return;
-    event.preventDefault();
-    history.pushState(null, "", id);
-    window.scrollTo({ top: targetTop(target), behavior: "smooth" });
+// ---------- Menu and "Free Quote" links ----------
+// Smooth-scrolls to the section. Once the scrolling stops, it checks it landed exactly right
+// and fixes the last bit if not. A new tap, or the visitor scrolling themselves, cancels any
+// check that's still waiting, so taps never fight each other.
+safely("section links", function () {
+  const header = document.querySelector(".site-header");
+  const headerOffset = function () { return (header ? header.offsetHeight : 0) + 8; };
+  const topOf = function (el) { return el.getBoundingClientRect().top + window.scrollY - headerOffset(); };
 
-    let checks = 0;
-    const settle = function () {
-      const off = Math.abs(target.getBoundingClientRect().top - headerOffset());
-      if (off > 4) window.scrollTo({ top: targetTop(target), behavior: "instant" });
-      if (++checks < 3) setTimeout(settle, 400);
-    };
-    setTimeout(settle, 900);
+  let current = null;   // the section we're heading to right now
+  let idleTimer = null;
+
+  const stop = function () { current = null; clearTimeout(idleTimer); };
+  const checkLanding = function () {
+    if (!current) return;
+    const target = current;
+    stop();
+    const off = Math.abs(target.getBoundingClientRect().top - headerOffset());
+    const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+    if (off > 4 && !atBottom) window.scrollTo({ top: topOf(target), behavior: "instant" });
+  };
+  // Wait until scrolling has been quiet for a moment before checking
+  window.addEventListener("scroll", function () {
+    if (!current) return;
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(checkLanding, 160);
+  }, { passive: true });
+  ["wheel", "touchmove"].forEach(function (type) {
+    window.addEventListener(type, stop, { passive: true });
+  });
+
+  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    const id = link.getAttribute("href");
+    if (id.length < 2) return;
+    link.addEventListener("click", function (event) {
+      const target = document.getElementById(id.slice(1));
+      if (!target) return;
+      event.preventDefault();
+      stop();
+      if (location.hash !== id) history.pushState(null, "", id);
+      current = target;
+      window.scrollTo({ top: topOf(target), behavior: "smooth" });
+      // In case the page was already in the right spot and no scrolling happens
+      idleTimer = setTimeout(checkLanding, 300);
+    });
   });
 });
 
-// Keep the footer year current
-document.getElementById("year").textContent = new Date().getFullYear();
-
-// Quote form: sends the request straight to the business Gmail through FormSubmit (free).
-const form = document.getElementById("quote-form");
-const statusText = document.getElementById("form-status");
-const success = document.getElementById("form-success");
-const button = form.querySelector(".quote-submit");
-const buttonText = button.querySelector(".label-text");
-
-form.addEventListener("submit", async function (event) {
-  event.preventDefault();
-  const data = Object.fromEntries(new FormData(form));
-
-  data._subject = "New quote request: " + data.project + " (" + data.name + ")";
-  data._template = "table";
-  data._captcha = "false";
-  if (data.email) data._replyto = data.email;
-
-  button.disabled = true;
-  buttonText.textContent = "Sending…";
-  statusText.className = "form-status";
-  statusText.textContent = "";
-
-  try {
-    const response = await fetch("https://formsubmit.co/ajax/agcustomtileinteriors@gmail.com", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify(data),
-    });
-    // FormSubmit answers 200 even when it didn't send, so check its "success" flag too
-    const result = await response.json();
-    if (!response.ok || String(result.success) !== "true") throw new Error(result.message || "Request failed");
-
-    form.reset();
-    form.hidden = true;
-    success.hidden = false;
-    success.scrollIntoView({ behavior: "smooth", block: "center" });
-  } catch (error) {
-    statusText.classList.add("is-error");
-    statusText.innerHTML = 'Sorry, something went wrong. Please call us at <a href="tel:+16129917000">612-991-7000</a>.';
-  } finally {
-    button.disabled = false;
-    buttonText.textContent = "Get My Free Quote";
-  }
+// ---------- Footer year ----------
+safely("footer year", function () {
+  const year = document.getElementById("year");
+  if (year) year.textContent = new Date().getFullYear();
 });
 
-document.getElementById("send-another").addEventListener("click", function () {
-  success.hidden = true;
-  form.hidden = false;
+// ---------- Quote form ----------
+// Sends the request straight to the business Gmail through FormSubmit (free).
+safely("quote form", function () {
+  const form = document.getElementById("quote-form");
+  if (!form) return;
+  const statusText = document.getElementById("form-status");
+  const success = document.getElementById("form-success");
+  const button = form.querySelector(".quote-submit");
+  const buttonText = button.querySelector(".label-text");
+  const sendAnother = document.getElementById("send-another");
+  const ENDPOINT = "https://formsubmit.co/ajax/agcustomtileinteriors@gmail.com";
+  let sending = false;
+
+  form.noValidate = true; // we show our own, clearer messages
+
+  const showError = function (html) {
+    statusText.className = "form-status is-error";
+    statusText.innerHTML = html;
+  };
+  const clearErrors = function () {
+    statusText.className = "form-status";
+    statusText.textContent = "";
+    form.querySelectorAll(".is-invalid").forEach(function (el) {
+      el.classList.remove("is-invalid");
+      el.removeAttribute("aria-invalid");
+    });
+    form.querySelectorAll(".field-error").forEach(function (el) { el.remove(); });
+  };
+  const flag = function (el, message) {
+    el.classList.add("is-invalid");
+    el.setAttribute("aria-invalid", "true");
+    // Show the message right under the field that needs fixing
+    const note = document.createElement("p");
+    note.className = "field-error";
+    note.setAttribute("role", "alert");
+    note.textContent = message;
+    (el.matches(".chips") ? el : el.closest(".field") || el.parentElement).append(note);
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    const focusable = el.matches("input, textarea") ? el : el.querySelector("input");
+    if (focusable) setTimeout(function () { focusable.focus({ preventScroll: true }); }, 350);
+  };
+
+  // Remove the red outline as soon as the visitor fixes a field
+  form.addEventListener("input", function (event) {
+    const field = event.target.closest(".is-invalid") || (event.target.name === "project" && form.querySelector(".chips"));
+    if (field) {
+      field.classList.remove("is-invalid");
+      field.removeAttribute("aria-invalid");
+      const box = field.matches(".chips") ? field : field.closest(".field") || field.parentElement;
+      const note = box.querySelector(".field-error");
+      if (note) note.remove();
+    }
+  });
+
+  form.addEventListener("submit", async function (event) {
+    event.preventDefault();
+    if (sending) return;
+    clearErrors();
+
+    const data = Object.fromEntries(new FormData(form));
+    Object.keys(data).forEach(function (key) { data[key] = String(data[key]).trim(); });
+
+    // Check the answers before sending
+    if (!data.project) return flag(form.querySelector(".chips"), "Please choose what you're planning.");
+    if (!data.name) return flag(form.elements.name, "Please enter your name.");
+    if (data.phone.replace(/\D/g, "").length < 10) return flag(form.elements.phone, "Please enter a phone number with area code.");
+    if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return flag(form.elements.email, "That email doesn't look right. Check it, or leave it empty.");
+    if (data._honey) return; // a bot filled the hidden trap, so quietly ignore it
+
+    data._subject = "New quote request: " + data.project + " (" + data.name + ")";
+    data._template = "table";
+    data._captcha = "false";
+    if (data.email) data._replyto = data.email;
+
+    sending = true;
+    button.disabled = true;
+    buttonText.textContent = "Sending…";
+
+    // Give up after 15 seconds instead of spinning forever on a bad connection
+    const controller = "AbortController" in window ? new AbortController() : null;
+    const timeout = controller ? setTimeout(function () { controller.abort(); }, 15000) : null;
+
+    try {
+      const response = await fetch(ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(data),
+        signal: controller ? controller.signal : undefined,
+      });
+      // FormSubmit answers 200 even when it didn't send, so check its "success" flag too
+      const result = await response.json().catch(function () { return {}; });
+      if (!response.ok || String(result.success) !== "true") throw new Error(result.message || "Request failed");
+
+      form.reset();
+      form.hidden = true;
+      success.hidden = false;
+      success.scrollIntoView({ behavior: "smooth", block: "center" });
+    } catch (error) {
+      showError('Sorry, your request didn\'t go through. Please try again, or call us at <a href="tel:+16129917000">612-991-7000</a>.');
+    } finally {
+      clearTimeout(timeout);
+      sending = false;
+      button.disabled = false;
+      buttonText.textContent = "Get My Free Quote";
+    }
+  });
+
+  if (sendAnother) {
+    sendAnother.addEventListener("click", function () {
+      clearErrors();
+      success.hidden = true;
+      form.hidden = false;
+    });
+  }
 });

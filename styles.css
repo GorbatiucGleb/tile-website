@@ -369,7 +369,7 @@ h1 em, h2 em { font-style: italic; }
 .quote-main { padding: 52px 52px 44px; }
 .quote-form { display: grid; gap: 20px; }
 .quote-form[hidden] { display: none; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
 .field {
   display: grid;
   gap: 8px;
@@ -660,3 +660,20 @@ h1 em, h2 em { font-style: italic; }
   .loader-grid::after { display: none; }
   .is-loading .loader { transition-duration: 0.3s; }
 }
+
+/* Fields that need fixing */
+.quote-form .is-invalid,
+.quote-form input.is-invalid,
+.quote-form textarea.is-invalid {
+  border-color: #b3261e !important;
+  background: #fdf3f2 !important;
+}
+.chips.is-invalid { border: 0 !important; background: none !important; }
+.chips.is-invalid span { border-color: #d9827c; }
+/* Visible keyboard focus everywhere */
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
+.field-error { margin: 0; color: #b3261e; font-size: 0.88rem; font-weight: 500; }
+.chips .field-error { flex-basis: 100%; margin-top: 4px; }
