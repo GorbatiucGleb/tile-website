@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Montserrat:wght@500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <!-- Bump the ?v= number after style changes so phones load the new version -->
-  <link rel="stylesheet" href="styles.css?v=22">
+  <link rel="stylesheet" href="styles.css?v=23">
   <!-- Show the loading screen once per visit (not again when moving around the page) -->
   <script>
     try { if (!sessionStorage.getItem("cti-intro")) document.documentElement.classList.add("is-loading"); }
@@ -71,7 +71,8 @@
   <header class="site-header">
     <div class="container header-inner">
       <a href="#top" class="brand" aria-label="Custom Tile Interiors home">
-        <img src="images/logo-light.png" alt="Custom Tile Interiors logo" width="336" height="238">
+        <img src="images/logo-light-text.png" alt="Custom Tile Interiors logo" width="336" height="238">
+        <img src="images/logo-c.png" alt="" class="brand-c" width="78" height="85" aria-hidden="true">
       </a>
       <nav class="nav" aria-label="Main">
         <a href="#services">Services</a>
@@ -87,10 +88,31 @@
 
     <!-- Hero: full-width photo. Wide crop for computers, tall crop for phones -->
     <section class="hero">
-      <picture class="hero-photo">
-        <source media="(max-aspect-ratio: 1/1)" srcset="images/hero-mobile.jpg">
-        <img width="2000" height="1124" src="images/hero.jpg" alt="Bathroom by Custom Tile Interiors: freestanding tub on a basketweave mosaic and a glass shower with large-format tile">
-      </picture>
+      <!-- Slideshow: photos fade from one to the next. Wide crops for computers, tall crops for phones -->
+      <div class="hero-slides">
+        <picture class="hero-photo is-active">
+          <source media="(max-aspect-ratio: 1/1)" srcset="images/hero-mobile.jpg">
+          <img width="2000" height="1124" src="images/hero.jpg" alt="Bathroom by Custom Tile Interiors: freestanding tub on a basketweave mosaic and a glass shower with large-format tile" fetchpriority="high">
+        </picture>
+        <picture class="hero-photo">
+          <source media="(max-aspect-ratio: 1/1)" srcset="images/hero-kitchen-mobile.jpg">
+          <img width="1334" height="750" src="images/hero-kitchen.jpg" alt="Farmhouse kitchen with a green glazed tile backsplash behind the range">
+        </picture>
+        <picture class="hero-photo">
+          <source media="(max-aspect-ratio: 1/1)" srcset="images/hero-onyx-mobile.jpg">
+          <img width="1333" height="749" src="images/hero-onyx.jpg" alt="Shower with large blue onyx-look slab walls">
+        </picture>
+        <picture class="hero-photo">
+          <source media="(max-aspect-ratio: 1/1)" srcset="images/hero-bar-mobile.jpg">
+          <img width="1800" height="1012" src="images/hero-bar.jpg" alt="Wet bar with an arabesque tile backsplash and floating shelves">
+        </picture>
+      </div>
+      <div class="hero-dots" aria-label="Choose a photo">
+        <button type="button" class="hero-dot is-active" aria-label="Show photo 1"></button>
+        <button type="button" class="hero-dot" aria-label="Show photo 2"></button>
+        <button type="button" class="hero-dot" aria-label="Show photo 3"></button>
+        <button type="button" class="hero-dot" aria-label="Show photo 4"></button>
+      </div>
       <div class="hero-content">
         <p class="label label-light">Tile Contractor · Twin Cities, MN</p>
         <h1>Custom tile, <em>beautifully</em> installed.</h1>
@@ -200,6 +222,8 @@
           <figure><img width="934" height="1400" src="images/shower-subway-marble-bench.jpg" alt="White subway tile shower with a marble bench" loading="lazy"></figure>
           <figure><img width="934" height="1400" src="images/shower-blue-subway-ledge.jpg" alt="Pale blue glossy subway tile shower with a marble ledge" loading="lazy"></figure>
           <figure><img width="934" height="1400" src="images/shower-marble-subway-black.jpg" alt="Marble subway tile shower wall framed with black trim" loading="lazy"></figure>
+          <figure><img width="940" height="1400" src="images/sauna-shower-room.jpg" alt="Spa bathroom with a glass-enclosed cedar sauna and tiled shower" loading="lazy"></figure>
+          <figure><img width="832" height="1248" src="images/shower-white-tile-window.jpg" alt="White vertical tile shower with a black-framed window, brass fixtures and a pebble floor" loading="lazy"></figure>
           <figure><img width="934" height="1400" src="images/shower-white-vertical-tile.jpg" alt="Shower with white tile laid vertically, a niche and a window" loading="lazy"></figure>
           <figure><img width="1050" height="1400" src="images/bathroom-marble-floor-herringbone.jpg" alt="Master bathroom with large marble-look floor tile and a herringbone mosaic strip" loading="lazy"></figure>
           <figure><img width="1050" height="1400" src="images/shower-niche-floating-bench.jpg" alt="Large gray tile shower with a tall three-shelf niche and a floating bench" loading="lazy"></figure>
@@ -350,6 +374,6 @@
   <!-- Call button that stays on screen on phones -->
   <a href="tel:+16129917000" class="mobile-call">Call for a Free Quote</a>
 
-  <script src="script.js?v=22"></script>
+  <script src="script.js?v=23"></script>
 </body>
 </html>
