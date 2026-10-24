@@ -12,9 +12,43 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Montserrat:wght@500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <!-- Bump the ?v= number after style changes so phones load the new version -->
-  <link rel="stylesheet" href="styles.css?v=15">
+  <link rel="stylesheet" href="styles.css?v=17">
+  <!-- Show the loading screen once per visit (not again when moving around the page) -->
+  <script>
+    try { if (!sessionStorage.getItem("cti-intro")) document.documentElement.classList.add("is-loading"); }
+    catch (e) { document.documentElement.classList.add("is-loading"); }
+  </script>
 </head>
 <body>
+
+  <!-- Loading screen: tiles get "laid" one by one, the blue ones form the C from the logo -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="loader-inner">
+      <div class="loader-grid">
+        <span class="t" style="--d:0"></span>
+        <span class="t c" style="--d:1"></span>
+        <span class="t c" style="--d:2"></span>
+        <span class="t c" style="--d:3"></span>
+        <span class="t c" style="--d:1"></span>
+        <span class="t" style="--d:2"></span>
+        <span class="t alt" style="--d:3"></span>
+        <span class="t" style="--d:4"></span>
+        <span class="t c" style="--d:2"></span>
+        <span class="t alt" style="--d:3"></span>
+        <span class="t" style="--d:4"></span>
+        <span class="t alt" style="--d:5"></span>
+        <span class="t alt" style="--d:3"></span>
+        <span class="t c" style="--d:4"></span>
+        <span class="t c" style="--d:5"></span>
+        <span class="t c" style="--d:6"></span>
+      </div>
+      <div class="loader-name">
+        <span class="loader-l1">Custom Tile</span>
+        <span class="loader-l2">Interiors</span>
+      </div>
+      <div class="loader-line"></div>
+    </div>
+  </div>
 
   <div class="top-bar">
     <div class="container top-bar-inner">
@@ -305,6 +339,6 @@
   <!-- Call button that stays on screen on phones -->
   <a href="tel:+16129917000" class="mobile-call">Call for a Free Quote</a>
 
-  <script src="script.js?v=14"></script>
+  <script src="script.js?v=17"></script>
 </body>
 </html>

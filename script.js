@@ -5,6 +5,38 @@ window.addEventListener("load", function () {
   if (!location.hash) window.scrollTo(0, 0);
 });
 
+// Loading screen: stays up until its animation has fully played (about 2.3s from when it first
+// appears on screen) and the page is ready, then slides away. Never longer than ~5s in total.
+const root = document.documentElement;
+if (root.classList.contains("is-loading")) {
+  const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const playTime = calm ? 500 : 2300;
+  let shownAt = null;
+  let pageReady = false;
+  let done = false;
+
+  const hide = function () {
+    if (done) return;
+    done = true;
+    root.classList.add("is-loaded");
+    try { sessionStorage.setItem("cti-intro", "1"); } catch (e) {}
+    setTimeout(function () { root.classList.remove("is-loading", "is-loaded"); }, 850);
+  };
+  const tryHide = function () {
+    if (shownAt === null || !pageReady) return;
+    setTimeout(hide, Math.max(0, playTime - (performance.now() - shownAt)));
+  };
+
+  // The animation starts on the first frame drawn, so start the clock there
+  requestAnimationFrame(function () {
+    shownAt = performance.now();
+    tryHide();
+  });
+  if (document.readyState === "complete") pageReady = true;
+  else window.addEventListener("load", function () { pageReady = true; tryHide(); });
+  setTimeout(hide, Math.max(0, 5000 - performance.now()));
+}
+
 // Keep the footer year current
 document.getElementById("year").textContent = new Date().getFullYear();
 

@@ -568,3 +568,95 @@ h1 em, h2 em { font-style: italic; }
     padding: 18px;
   }
 }
+
+/* ---------- Loading screen ---------- */
+.loader { display: none; }
+.is-loading body { overflow: hidden; }
+.is-loading .loader {
+  display: grid;
+  place-items: center;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--white);
+  transition: transform 0.8s cubic-bezier(0.76, 0, 0.24, 1);
+  /* Safety net: hide itself even if the script never runs */
+  animation: loader-failsafe 0.01s 6s forwards;
+}
+.is-loaded .loader { transform: translateY(-100%); }
+@keyframes loader-failsafe { to { visibility: hidden; opacity: 0; } }
+
+.loader-inner { display: grid; justify-items: center; gap: 26px; }
+
+.loader-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 40px);
+  gap: 5px;
+  overflow: hidden;
+  padding: 2px;
+}
+/* Each tile drops into place along a diagonal wave */
+.loader-grid .t {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  background: #e9e5df;
+  opacity: 0;
+  animation: tile-lay 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.3) forwards;
+  animation-delay: calc(var(--d) * 80ms + 100ms);
+}
+.loader-grid .alt { background: #dcd6cd; }
+/* The C tiles turn logo-blue once they're all down */
+.loader-grid .c {
+  animation:
+    tile-lay 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.3) forwards calc(var(--d) * 80ms + 100ms),
+    tile-tint 0.35s ease forwards calc(var(--d) * 50ms + 900ms);
+}
+/* A light sweep across the tiles, like a fresh polish */
+.loader-grid::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background: linear-gradient(110deg, transparent 35%, rgba(255,255,255,0.75) 50%, transparent 65%);
+  transform: translateX(-120%);
+  animation: tile-shine 0.9s ease forwards 1.35s;
+}
+@keyframes tile-lay {
+  0%   { opacity: 0; transform: translateY(-18px) rotate(-10deg) scale(0.6); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes tile-tint { to { background: var(--blue); } }
+@keyframes tile-shine { to { transform: translateX(120%); } }
+
+.loader-name {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  font-family: var(--caps);
+  text-transform: uppercase;
+  opacity: 0;
+  animation: name-in 0.7s ease forwards 1.05s;
+}
+.loader-l1 { font-weight: 700; font-size: 1.5rem; letter-spacing: 0.22em; color: var(--ink); }
+.loader-l2 { font-weight: 600; font-size: 0.95rem; letter-spacing: 0.5em; color: var(--blue); margin-right: -0.5em; }
+@keyframes name-in {
+  from { opacity: 0; letter-spacing: 0.6em; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Thin blue line grows out from the center, like the lines in the logo */
+.loader-line {
+  width: 180px;
+  height: 2px;
+  background: var(--blue);
+  transform: scaleX(0);
+  animation: line-grow 0.6s ease forwards 1.4s;
+}
+@keyframes line-grow { to { transform: scaleX(1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .loader-grid .t, .loader-grid .c, .loader-name, .loader-line { animation-duration: 0.01s; animation-delay: 0s; }
+  .loader-grid::after { display: none; }
+  .is-loading .loader { transition-duration: 0.3s; }
+}
