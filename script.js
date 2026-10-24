@@ -38,7 +38,10 @@ safely("loading screen", function () {
     done = true;
     root.classList.add("is-loaded");
     try { sessionStorage.setItem("cti-intro", "1"); } catch (e) {}
-    setTimeout(function () { root.classList.remove("is-loading", "is-loaded"); }, 850);
+    setTimeout(function () {
+      root.classList.remove("is-loading", "is-loaded");
+      document.dispatchEvent(new Event("cti:intro-done"));
+    }, 850);
   };
   const tryHide = function () {
     if (shownAt === null || !pageReady) return;
@@ -84,6 +87,17 @@ safely("section links", function () {
   }, { passive: true });
   ["wheel", "touchmove"].forEach(function (type) {
     window.addEventListener(type, stop, { passive: true });
+  });
+
+  // Arriving from another page with a link like /#quote: go to that section once the page
+  // (and the loading screen, if it's showing) is ready
+  const goToHash = function () {
+    const target = location.hash.length > 1 && document.getElementById(location.hash.slice(1));
+    if (target && !userMoved) window.scrollTo({ top: topOf(target), behavior: "instant" });
+  };
+  window.addEventListener("load", function () {
+    if (root.classList.contains("is-loading")) document.addEventListener("cti:intro-done", goToHash, { once: true });
+    else setTimeout(goToHash, 50);
   });
 
   document.querySelectorAll('a[href^="#"]').forEach(function (link) {

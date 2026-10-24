@@ -22,13 +22,148 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Montserrat:wght@500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <!-- Bump the ?v= number after style changes so phones load the new version -->
-  <link rel="stylesheet" href="styles.css?v=35">
+  <link rel="stylesheet" href="styles.css?v=37">
   <!-- Show the loading screen once per visit (not again when moving around the page) -->
   <script>
     try { if (!sessionStorage.getItem("cti-intro")) document.documentElement.classList.add("is-loading"); }
     catch (e) { document.documentElement.classList.add("is-loading"); }
     // Backup: even if the main script never loads, never keep the page locked behind the loading screen
     setTimeout(function () { document.documentElement.classList.remove("is-loading", "is-loaded"); }, 6000);
+  </script>
+  <!-- Business details for Google (not shown on the page) -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HomeAndConstructionBusiness",
+  "@id": "https://customtileinteriorsmn.com/#business",
+  "name": "Custom Tile Interiors",
+  "description": "Tile contractor serving Minneapolis, St. Paul and the Twin Cities: custom and steam showers, backsplashes, tile floors, heated floors, fireplaces and mitered tile edges.",
+  "url": "https://customtileinteriorsmn.com/",
+  "telephone": "+1-612-991-7000",
+  "email": "agcustomtileinteriors@gmail.com",
+  "logo": "https://customtileinteriorsmn.com/images/logo-light.png",
+  "image": "https://customtileinteriorsmn.com/images/share-preview.jpg",
+  "address": {
+    "@type": "PostalAddress",
+    "addressRegion": "MN",
+    "addressCountry": "US"
+  },
+  "areaServed": [
+    {
+      "@type": "City",
+      "name": "Minneapolis, MN"
+    },
+    {
+      "@type": "City",
+      "name": "St. Paul, MN"
+    },
+    {
+      "@type": "City",
+      "name": "Bloomington, MN"
+    },
+    {
+      "@type": "City",
+      "name": "Edina, MN"
+    },
+    {
+      "@type": "City",
+      "name": "Minnetonka, MN"
+    },
+    {
+      "@type": "City",
+      "name": "Plymouth, MN"
+    },
+    {
+      "@type": "City",
+      "name": "Maple Grove, MN"
+    },
+    {
+      "@type": "City",
+      "name": "Eden Prairie, MN"
+    },
+    {
+      "@type": "City",
+      "name": "Eagan, MN"
+    },
+    {
+      "@type": "City",
+      "name": "Woodbury, MN"
+    },
+    {
+      "@type": "City",
+      "name": "Burnsville, MN"
+    },
+    {
+      "@type": "Place",
+      "name": "Twin Cities metro, Minnesota"
+    }
+  ],
+  "sameAs": [
+    "https://maps.google.com/?cid=2243337862761201056"
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Tile services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Large-Format Custom Showers",
+          "url": "https://customtileinteriorsmn.com/services/custom-showers/"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Steam Showers",
+          "url": "https://customtileinteriorsmn.com/services/steam-showers/"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Tile Backsplashes",
+          "url": "https://customtileinteriorsmn.com/services/backsplashes/"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Tile Floors",
+          "url": "https://customtileinteriorsmn.com/services/tile-floors/"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Heated Tile Floors",
+          "url": "https://customtileinteriorsmn.com/services/heated-floors/"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Tile Fireplaces",
+          "url": "https://customtileinteriorsmn.com/services/fireplaces/"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Mitered Tile Edges",
+          "url": "https://customtileinteriorsmn.com/services/mitered-edges/"
+        }
+      }
+    ]
+  }
+}
   </script>
 </head>
 <body>
@@ -157,37 +292,55 @@
 
         <div class="services-grid">
           <article class="service">
-            <div class="ph"><img width="736" height="1104" src="images/shower-porcelain-slabs.jpg" alt="Walk-in shower with floor-to-ceiling porcelain slabs and a pebble mosaic floor" loading="lazy"></div>
-            <h3>Large-Format Custom Showers</h3>
-            <p>Walk-in showers built with large-format tile for a modern look with fewer grout lines.</p>
+            <a href="/services/custom-showers/" class="service-link">
+              <div class="ph"><img width="736" height="1104" src="images/shower-porcelain-slabs.jpg" alt="Walk-in shower with floor-to-ceiling porcelain slabs and a pebble mosaic floor" loading="lazy"></div>
+              <h3>Large-Format Custom Showers</h3>
+              <p>Walk-in showers built with large-format tile for a modern look with fewer grout lines.</p>
+              <span class="service-more">Learn more →</span>
+            </a>
           </article>
           <article class="service">
-            <div class="ph"><img width="736" height="1106" src="images/wet-room-tub-shower.jpg" alt="Glass-enclosed wet room with a rain shower, soaking tub and river rock floor" loading="lazy"></div>
-            <h3>Steam Showers</h3>
-            <p>Fully sealed steam showers that turn your bathroom into a spa.</p>
+            <a href="/services/steam-showers/" class="service-link">
+              <div class="ph"><img width="736" height="1106" src="images/wet-room-tub-shower.jpg" alt="Glass-enclosed wet room with a rain shower, soaking tub and river rock floor" loading="lazy"></div>
+              <h3>Steam Showers</h3>
+              <p>Fully sealed steam showers that turn your bathroom into a spa.</p>
+              <span class="service-more">Learn more →</span>
+            </a>
           </article>
           <article class="service">
-            <div class="ph"><img width="736" height="1103" src="images/kitchen-backsplash.jpg" alt="Kitchen with a glossy handmade-look tile backsplash around black windows" loading="lazy"></div>
-            <h3>Backsplashes</h3>
-            <p>Kitchen and bar backsplashes that tie the whole room together.</p>
+            <a href="/services/backsplashes/" class="service-link">
+              <div class="ph"><img width="736" height="1103" src="images/kitchen-backsplash.jpg" alt="Kitchen with a glossy handmade-look tile backsplash around black windows" loading="lazy"></div>
+              <h3>Backsplashes</h3>
+              <p>Kitchen and bar backsplashes that tie the whole room together.</p>
+              <span class="service-more">Learn more →</span>
+            </a>
           </article>
           <article class="service">
-            <div class="ph"><img width="1050" height="1400" src="images/floor-large-format.jpg" alt="Polished large-format marble-look floor tile in a master bathroom" loading="lazy"></div>
-            <h3>Tile Floors</h3>
-            <p>Durable, level tile floors for kitchens, bathrooms, entryways and basements.</p>
+            <a href="/services/tile-floors/" class="service-link">
+              <div class="ph"><img width="1050" height="1400" src="images/floor-large-format.jpg" alt="Polished large-format marble-look floor tile in a master bathroom" loading="lazy"></div>
+              <h3>Tile Floors</h3>
+              <p>Durable, level tile floors for kitchens, bathrooms, entryways and basements.</p>
+              <span class="service-more">Learn more →</span>
+            </a>
           </article>
           <article class="service">
-            <div class="ph"><img width="1050" height="1400" src="images/fireplace-fluted-tile-full.jpg" alt="Fireplace wall in fluted tile with a wood mantel" loading="lazy"></div>
-            <h3>Fireplaces</h3>
-            <p>Tile fireplace surrounds and feature walls that become the centerpiece of the room.</p>
+            <a href="/services/fireplaces/" class="service-link">
+              <div class="ph"><img width="1050" height="1400" src="images/fireplace-fluted-tile-full.jpg" alt="Fireplace wall in fluted tile with a wood mantel" loading="lazy"></div>
+              <h3>Fireplaces</h3>
+              <p>Tile fireplace surrounds and feature walls that become the centerpiece of the room.</p>
+              <span class="service-more">Learn more →</span>
+            </a>
           </article>
           <article class="service">
-            <div class="ph has-inset">
-              <img width="1050" height="1400" src="images/heated-floor-install.jpg" alt="Heated floor cable system being installed before tile" loading="lazy">
-              <img width="1400" height="1400" src="images/heated-floor-install-2.jpg" alt="Heating cables laid in a bathroom floor membrane" loading="lazy" class="inset">
-            </div>
-            <h3>Heated Floors</h3>
-            <p>In-floor heating installed under your tile, made for Minnesota winters.</p>
+            <a href="/services/heated-floors/" class="service-link">
+              <div class="ph has-inset">
+                <img width="1050" height="1400" src="images/heated-floor-install.jpg" alt="Heated floor cable system being installed before tile" loading="lazy">
+                <img width="1400" height="1400" src="images/heated-floor-install-2.jpg" alt="Heating cables laid in a bathroom floor membrane" loading="lazy" class="inset">
+              </div>
+              <h3>Heated Floors</h3>
+              <p>In-floor heating installed under your tile, made for Minnesota winters.</p>
+              <span class="service-more">Learn more →</span>
+            </a>
           </article>
         </div>
       </div>
@@ -201,6 +354,7 @@
           <p class="label">The details</p>
           <h2>Mitered edges, <em>no metal trim</em></h2>
           <p>On corners, niches and shower curbs, we cut each tile at a precise 45° angle and join the two pieces into one clean edge. The seam is filled with color-matched epoxy, and on marble-look tile we carry the veining right through the joint, so the pattern flows around the corner without a break, like a solid slab of stone. No plastic or metal trim strips, just the tile itself.</p>
+          <a href="/services/mitered-edges/" class="btn btn-outline">How we do mitered edges</a>
         </div>
       </div>
     </section>
@@ -394,6 +548,6 @@
   <!-- Call button that stays on screen on phones -->
   <a href="tel:+16129917000" class="mobile-call">Call for a Free Quote</a>
 
-  <script src="script.js?v=36"></script>
+  <script src="script.js?v=37"></script>
 </body>
 </html>
