@@ -100,14 +100,14 @@ safely("section links", function () {
 });
 
 // ---------- Top slideshow ----------
-// Fades to the next photo every 5.5 seconds and loops back to the first. Tapping a dot jumps
+// Fades to the next photo every 2 seconds and loops back to the first. Tapping a dot jumps
 // to that photo. Pauses while the tab isn't visible, and stays still for "Reduce Motion".
 safely("slideshow", function () {
   const slides = Array.from(document.querySelectorAll(".hero-slides .hero-photo"));
   const dots = Array.from(document.querySelectorAll(".hero-dot"));
   if (slides.length < 2) return;
   const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const DELAY = 5500;
+  const DELAY = 2000;
   let index = 0;
   let timer = null;
 

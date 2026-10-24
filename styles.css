@@ -682,7 +682,7 @@ a:focus-visible, button:focus-visible {
 .hero-slides { position: absolute; inset: 0; }
 .hero-slides .hero-photo {
   opacity: 0;
-  transition: opacity 1.4s ease;
+  transition: opacity 0.6s ease;
 }
 .hero-slides .hero-photo.is-active { opacity: 1; }
 .hero-dots {
@@ -726,12 +726,12 @@ a:focus-visible, button:focus-visible {
   width: 23.21%;
   height: auto;
   transform-origin: 50% 50%;
-  animation: c-flip 5s ease-in-out infinite 3s;
+  animation: c-flip 2s ease-in-out infinite 2.5s;
 }
-/* Rest, then one smooth full flip, then rest again */
+/* Every 2 seconds: a short rest, then one smooth full flip */
 @keyframes c-flip {
-  0%, 70%  { transform: rotateY(0deg); }
-  85%      { transform: rotateY(180deg) scale(1.08); }
+  0%, 45%  { transform: rotateY(0deg); }
+  72%      { transform: rotateY(180deg) scale(1.08); }
   100%     { transform: rotateY(360deg); }
 }
 
