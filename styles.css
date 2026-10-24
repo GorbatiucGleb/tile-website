@@ -502,10 +502,30 @@ h1 em, h2 em { font-style: italic; }
 .copyright { margin-top: 16px !important; font-size: 0.8rem; }
 
 .mobile-call { display: none; }
+.nav-mobile { display: none; }
 
 /* ---------- Tablet ---------- */
 @media (max-width: 900px) {
   .nav a:not(.btn) { display: none; }
+  .nav-mobile {
+    display: flex;
+    justify-content: space-between;
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 0 16px;
+    border-top: 1px solid var(--line);
+  }
+  .nav-mobile a {
+    font-family: var(--caps);
+    font-weight: 600;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--ink);
+    padding: 13px 4px;
+  }
+  .nav-mobile a:active { color: var(--blue); }
   .services-grid { grid-template-columns: 1fr 1fr; }
   .split { grid-template-columns: 1fr; gap: 48px; }
   .framed { padding: 56px 32px; }
