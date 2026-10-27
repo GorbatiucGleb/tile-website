@@ -14,9 +14,14 @@ function safely(name, setup) {
 }
 
 // ---------- Open at the top ----------
-// Phones otherwise jump back to wherever you were last time. Links to a section (#quote) still work.
+// Phones otherwise jump back to wherever you were last time.
+// A section link like /#quote is only followed when it comes from our own pages (the service
+// pages' Free Quote buttons). A link someone texted with #services on the end opens at the top.
 safely("open at top", function () {
   if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  let fromOurSite = false;
+  try { fromOurSite = !!document.referrer && new URL(document.referrer).host === location.host; } catch (e) {}
+  if (location.hash && !fromOurSite) history.replaceState(null, "", location.pathname + location.search);
   window.addEventListener("load", function () {
     if (!location.hash && !userMoved) window.scrollTo(0, 0);
   });
@@ -94,6 +99,8 @@ safely("section links", function () {
   const goToHash = function () {
     const target = location.hash.length > 1 && document.getElementById(location.hash.slice(1));
     if (target && !userMoved) window.scrollTo({ top: topOf(target), behavior: "instant" });
+    // Clean the address again, so a link copied from here opens at the top
+    if (location.hash) history.replaceState(null, "", location.pathname + location.search);
   };
   window.addEventListener("load", function () {
     if (root.classList.contains("is-loading")) document.addEventListener("cti:intro-done", goToHash, { once: true });
@@ -108,7 +115,7 @@ safely("section links", function () {
       if (!target) return;
       event.preventDefault();
       stop();
-      if (location.hash !== id) history.pushState(null, "", id);
+      // Don't add #section to the address, so links people copy and share open at the top
       current = target;
       window.scrollTo({ top: topOf(target), behavior: "smooth" });
       // In case the page was already in the right spot and no scrolling happens

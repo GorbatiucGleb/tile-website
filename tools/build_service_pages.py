@@ -5,7 +5,7 @@ from PIL import Image
 
 SITE = sys.argv[1]
 BASE = "https://customtileinteriorsmn.com"
-V_CSS, V_JS = "37", "37"
+V_CSS, V_JS = "37", "38"
 
 def size(img):
     with Image.open(os.path.join(SITE, "images", img)) as im:
